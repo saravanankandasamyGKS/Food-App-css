@@ -2,29 +2,55 @@ import { useEffect, useState } from "react";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import RestaurantCard, { withPromotedLabel } from "./RestaurentCard";
+import useOnlineStatus from "../../utils/useOnlineStatus";
 
 const Body = () => {
   const [listOfRestaurant, setListOfRestaurant] = useState([]);
   const [filteredRestaurant, setFilteredRestaurant] = useState([]);
   const [searchtext, setSearchText] = useState("");
+  const onlineStatus = useOnlineStatus();
   const RestaurantCardPromoted = withPromotedLabel(RestaurantCard);
   useEffect(() => {
     fetchData();
   }, []);
   const fetchData = async () => {
-    const data = await fetch(
-      "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9226449&lng=77.6174197&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
-    );
-    const json = await data.json();
-    console.log(json);
-    setListOfRestaurant(
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
-    setFilteredRestaurant(
-      json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
+    try {
+      const data = await fetch(
+        "https://www.swiggy.com/dapi/restaurants/list/v5?lat=12.9226449&lng=77.6174197&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
+      );
+
+      if (!data.ok) {
+        throw new Error(`HTTP error! Status: ${data.status}`);
+      }
+
+      const json = await data.json();
+
+      setListOfRestaurant(
+        json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
+          ?.restaurants || []
+      );
+
+      setFilteredRestaurant(
+        json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle
+          ?.restaurants || []
+      );
+    } catch (error) {
+      console.error("Failed to fetch restaurant data:", error);
+      alert("Oops! Something went wrong while fetching restaurant data.");
+      setListOfRestaurant([]);
+      setFilteredRestaurant([]);
+    }
   };
-  
+  if (onlineStatus === false) {
+    return (
+      <div className="center-container">
+        <div className="center-content">
+          <h1>You are Offline</h1>
+        </div>
+      </div>
+    );
+  }
+
   return listOfRestaurant.length === 0 ? (
     <Shimmer />
   ) : (

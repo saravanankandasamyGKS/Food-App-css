@@ -560,6 +560,18 @@ body {
   font-size: 1.2rem;
   color: #555;
 }
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  background-color: #f8f8f8;
+}
+
+.center-content {
+  text-align: center;
+  font-family: sans-serif;
+}
 
 /* =========================
    RESPONSIVE MEDIA QUERIES
