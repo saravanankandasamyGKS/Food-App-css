@@ -35,10 +35,8 @@ const Body = () => {
           ?.restaurants || []
       );
     } catch (error) {
-      console.error("Failed to fetch restaurant data:", error);
+      console.log("Failed to fetch restaurant data:", error || "Unknown error");
       alert("Oops! Something went wrong while fetching restaurant data.");
-      setListOfRestaurant([]);
-      setFilteredRestaurant([]);
     }
   };
   if (onlineStatus === false) {
