@@ -37,6 +37,8 @@ const Body = () => {
     } catch (error) {
       console.log("Failed to fetch restaurant data:", error || "Unknown error");
       alert("Oops! Something went wrong while fetching restaurant data.");
+    } finally {
+      console.log("Fetch attempt finished.");
     }
   };
   if (onlineStatus === false) {
