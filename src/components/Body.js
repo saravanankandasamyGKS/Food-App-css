@@ -36,7 +36,7 @@ const Body = () => {
       );
     } catch (error) {
       console.log("Failed to fetch restaurant data:", error || "Unknown error");
-      alert("Oops! Something went wrong while fetching restaurant data.");
+      alert("INSTALL ACCESS CONTROLL ALLOW ORIGIN EXTENSION IN CROME BROWSER TO VIEW RESTAURANTS");
     } finally {
       console.log("Fetch attempt finished.");
     }
